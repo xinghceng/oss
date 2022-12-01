@@ -1,0 +1,19 @@
+{
+    "name": "china-wang/oss",
+    "type": "library",
+    "require": {
+        "php": ">=7.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ChinaWang\\Oss\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zz",
+            "email": "1044220795@qq.com"
+        }
+    ]
+}

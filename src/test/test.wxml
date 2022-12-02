@@ -1,0 +1,18 @@
+<view>
+  <view class="box" style="margin-bottom: 50rpx;">
+    <button bindtap="getAddress" type="warn">选择出发位置</button>
+    </view>
+  <!-- <l-radio-group bind:linchange="go" placement="row">
+    <l-radio key="driving" l-class="radio">驾车</l-radio>
+    <l-radio key="walking" l-class="radio">步行</l-radio>
+    <l-radio key="bicycling" l-class="radio">骑行</l-radio>
+    <l-radio key="ebicycling" l-class="radio">电动车</l-radio>
+    <l-radio key="transit" l-class="radio">公交</l-radio>
+  </l-radio-group> -->
+  <view style="margin-top: 50rpx;">距离为：{{distance}}米</view>>
+  <view class="box">
+    <button bindtap="call">拨号</button>
+  </view>
+<!-- 地图容器 -->
+<map latitude="{{latitude}}" longitude="{{longitude}}" show-location markers="{{covers}}" scale="{{scale}}" polyline="{{polyline}}" bindtap="place" style="width: 100%; height: 300px;"></map>
+</view>

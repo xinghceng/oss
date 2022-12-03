@@ -1,8 +1,0 @@
-<view>
-<form bindsubmit="logins" >
-  <l-input label="手机号"  placeholder="请输入手机号" name="phone" bind:linblur="phone" />
-  <l-input label="验证码"  label-layout="left" name="code" placeholder="请输入验证码"/>
-    <l-button type="default" size="mini" disabled="{{disabled}}" bind:lintap="sendCode" >{{codebtn}}</l-button>
-   <button form-type="submit" type="default">登录</button>
-</form>
-</view>

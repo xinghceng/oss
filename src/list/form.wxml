@@ -1,6 +1,0 @@
-<form bindsubmit="form" >
-  <input type="text" placeholder="请输入标题" name="title" />
-  <l-image-picker count="9"  bind:linchange="onChangeTap" />
-  <text bindtap="address">选择地址{{address}}</text>
-  <button form-type="submit" type="default" >发布</button>
-</form>

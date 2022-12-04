@@ -1,0 +1,36 @@
+<view >
+  <l-card type="avatar" l-class="card" image="{{goods.user.img}}"
+    title="{{goods.user.username}}" describe="18个小时前">
+        <l-tag  shape="circle" 
+                bg-color="#f3f3f3" 
+                font-color="#3963BC" 
+                slot="more"
+                size="large">
+                + 关注
+        </l-tag>
+  </l-card>
+  <view class="album">
+        <l-avatar class="avatar" size='80' shape="square" src="" />
+        <view class="right">
+            <view class='content'>{{goods.title}}</view>
+            <l-album urls="{{goods.img}}"></l-album>
+        </view>
+    </view>
+</view>
+<text>发布评论</text> 
+<form bindsubmit="form">
+  <input type="text" name="comment" placeholder="请您发表评论"/>
+     <button form-type="submit" type="default">评论</button>
+</form>
+<text>评论展示</text>
+<view wx:for="{{ping}}">
+  <l-card type="avatar" l-class="card" image="{{goods.user.img}}"
+    title="{{goods.user.username}}" describe="18个小时前">
+  </l-card>
+<view data-id="{{item.id}}" bindtap="report">{{item.comment}}</view>
+<view class="two">
+<block wx:for="{{item.son}}">
+<view>{{item.comment}}</view>b
+</block>
+</view>
+</view>

@@ -110,3 +110,108 @@ wx.onNetworkStatusChange((res) => {
         return $next($request);
     }
 ```
+```
+public function getForm(Request $request)
+{
+    $text_id=$request->input('text_id');
+    if (!$text_id)
+    {
+        return Resquest::fail(4001,'文章id错误',[]);
+    }
+    $token=$request->input('token');
+    if (!$token)
+    {
+        return  Resquest::fail(4001,'token不正确',[]);
+    }
+    $comment=$request->input('comment');
+    //  评论审核
+//    $appId = "26444078";
+//    $apiKey = "5VMKnYoqALchi9dnEaeHXkSf";
+//    $secretKey = "XrDAsRf6pgsIksxaBjoBBrKGPQxkqYcq";
+
+//    $client = new \Luffy\TextCensor\Core($appId, $apiKey, $secretKey);
+//    $res = $client->textCensorUserDefined($comment); //待审核文本字符串
+////    var_dump($res);
+//    if ($res['conclusion'] == '不合规'){
+//        return json_encode([
+//            'code'=>4001,
+//            'msg'=>'success',
+//            'data'=>$res['data']['0']['msg']
+//        ]);
+//    }
+    $jwt=(new  JwtService())->getToken($token);
+//    获取用户id
+    $user_id=$jwt->uid;
+    if (!$comment)
+    {
+        return  Resquest::fail(4001,'评论信息获取错误',[]);
+    }
+    $data=[
+      'text_id'=>$text_id,
+      'user_id'=>$user_id,
+      'comment'=>$comment,
+        'pid'=>0,
+        'status'=>1
+    ];
+    $res=Comment::with('user')->create($data);
+    if($res)
+    {
+        $comment=Comment::with('user')->where('id',$res['id'])->first();
+//        dd($comment);
+        event(new PodcastProcessed($comment));
+        return Resquest::success(200,'发布成功',$comment);
+    }else{
+        return Resquest::fail(4001,'发布失败',[]);
+    }
+}
+```
+```
+public function getReport(Request $request)
+{
+//    获取拼论id
+   $text_id=$request->input('text_id');
+   if (!$text_id)
+   {
+       return Resquest::fail(4001,'用户id未获取',[]);
+   }
+//   获取pid
+    $pid=$request->input('pid');
+   if (!$pid)
+   {
+       return Resquest::fail(4001,'实收东西',[]);
+   };
+   $token=$request->input('token');
+   if (!$token)
+   {
+       return  Resquest::fail(4001,'token不正确',[]);
+   }
+   $jwt=(new JwtService())->getToken($token);
+   $user_id=$jwt->uid;
+   if (!$user_id)
+   {
+       return Resquest::fail(4001,'用户未登录信息错误');
+   }
+   $comment=$request->input('comment');
+   if (!$comment)
+   {
+       return Resquest::fail(4001,['评论未获取'],[]);
+   }
+   $data=[
+     'user_id'=>$user_id,
+     'text_id'=>$text_id,
+     'pid'=>$pid,
+     'comment'=>$comment,
+     'status'=>1
+   ];
+   $res=Comment::create($data);
+   if ($res)
+   {
+       $comment=Comment::with('user')->where('id',$res['id'])->first();
+//        dd($comment);
+       event(new PodcastProcessed($comment));
+       return Resquest::success(200,'回复成功',$res);
+   }else{
+       return Resquest::fail(4001,'回复失败',[]);
+   }
+}
+```

@@ -247,3 +247,34 @@ public function getReport(Request $request)
         ////解密并获取
        $datas = json_decode(Redis::hget('list',$page));
 ```
+``` public function getDetail(Request $request)
+    {
+//        dd(1);
+        $id=$request->input('id');
+        if (!$id)
+        {
+            return Resquest::fail(4001,'详情id未获取到',[]);
+        }
+        $data=ListModel::with('user')->where('id',$id)->first();
+        if (!$data)
+        {
+            return Resquest::fail(4001,'具体数据展示错误',[]);
+        }
+       $list=Comment::where('text_id',$id)->where('status',1)->get()->toarray();
+//        dd($list);
+        if (!$list)
+        {
+            return  Resquest::fail(4001,'数据展示错误',[]);
+        }
+//       $arr=(new WorkSerice())->get_tree_list($list);
+          $arr=$this->get_tree_list($list);
+//        dd($arr);
+       $data['comment']=$arr;
+
+       if ($data)
+       {
+           return Resquest::success(200,'信息展示成功',$data);
+       }
+
+    }
+```

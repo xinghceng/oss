@@ -215,3 +215,35 @@ public function getReport(Request $request)
    }
 }
 ```
+```详情缓存数据
+ public function getDetail(Request $request)
+  {
+      if (empty(Redis::get('user_id'))){
+          return Resquest::fail(4001,'用户未登录',[]);
+      }
+      $id=$request->input('id');
+      $res=Redis::hset('good'.$id);
+      if (empty($res))
+      {
+          $result=Book::where('id',$id)->first();
+          $data=Redis::hset('goods',$id,json_encode($result,JSON_UNESCAPED_UNICODE));
+          return Resquest::success(200,'success',$result);
+      }else{
+          $data=json_encode($res,true);
+          return Resquest::success(200,'success',$data);
+      }
+  }
+```
+```
+
+                $store = [];
+        foreach ($list as $v){
+            $store[] = $v;
+        }
+        //将查询出得数据，进行加密到redis
+
+        Redis::hset('list',$page,json_encode($store,JSON_UNESCAPED_UNICODE));
+
+        ////解密并获取
+       $datas = json_decode(Redis::hget('list',$page));
+```
